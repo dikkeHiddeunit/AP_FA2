@@ -1,5 +1,5 @@
 #include <iostream>
-#include "include/Pallet.hpp"
+#include "include/pallet.hpp"
 
 // Pallet met alle waarden
 Pallet::Pallet(std::string itemName, int itemCapacity, int itemCount) {
