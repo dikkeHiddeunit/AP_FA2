@@ -1,5 +1,8 @@
 #include <iostream>
 #include "../src/include/pallet.hpp"
+#include "../src/include/warehouse.hpp"
+#include "../src/include/shelf.hpp"
+#include "../src/include/employee.hpp"
 
 
 int testPallet(){
@@ -25,4 +28,4 @@ int testPallet(){
 
     pallet2.ReallocateEmptyPallet("Limburgse vlaai", 8);
     std::cout << "Na het her lokaliseren: " << pallet2.getItemName() << ", overige plaatsen: " << pallet2.getRemainingSpace() << std::endl;
-}
+};
