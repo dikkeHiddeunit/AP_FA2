@@ -14,7 +14,7 @@ class Pallet{
         const std::string getItemName();
         const int getItemCount();
         const int getRemainingSpace();
-        bool ReallocateEmptyPallet(std::string itemName, int itemCapacity);
+        bool ReallocateEmptyPallet(std::string itemName, int itemCapacity, int itemCount);
         bool takeOne();
         bool putOne();
         bool isEmpty();     

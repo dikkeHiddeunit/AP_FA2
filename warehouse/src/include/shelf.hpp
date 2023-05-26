@@ -12,4 +12,5 @@ class Shelf{
         bool removePallet(int slot);
         bool insertPallet(int slot, Pallet pallet);
         bool isEmpty();
+        bool isFull();
 };

@@ -5,51 +5,49 @@ Shelf::Shelf() : pallets(std::array<Pallet, 4>{}) {}
 
 bool Shelf::swapPallet(int slot, int slot2) {
     if (slot < 0 || slot >= 4 || slot2 < 0 || slot2 >= 4) {
-        return false;  // Ongeldige slots
+        return false;  // Retourneer false zodra het slot ongeldig is
     }
 
-    Pallet temp = pallets[slot];
-    pallets[slot] = pallets[slot2];
-    pallets[slot2] = temp;
+    Pallet& pallet1 = pallets[slot];
+    Pallet& pallet2 = pallets[slot2];
 
-    return true;
+    std::swap(pallet1, pallet2);  // Wisseld de pallets van positie
+
+    return true;  // Retourneer true om aan te geven dat de wisseling is gelukt
 }
 
 std::array<bool, 4> Shelf::getSlotStatus() {
     std::array<bool, 4> slotStatus;
 
     for (int i = 0; i < 4; i++) {
-        slotStatus[i] = (pallets[i].getItemCount() > 0);
+        slotStatus[i] = (pallets[i].getItemCount() > 0);  // Controleer of elk slot bezet
     }
 
-    return slotStatus;
+    return slotStatus;  // Retourneer een array met de status van elk slot
 }
 
 bool Shelf::removePallet(int slot) {
     if (slot < 0 || slot >= 4) {
-        return false;  // Ongeldig slot
+        return false;  // Retourneer false voor een ongeldig slot
     }
 
     if (pallets[slot].getItemCount() == 0) {
-        return false;  // Pallet is al leeg
+        return false;  // Retourneer false als het palletslot al leeg is
     }
 
-    // Optioneel: Voer hier aanvullende logica uit om de pallet te verwijderen
+    pallets[slot] = Pallet();  // Maak het slot leeg door een nieuwe lege pallet toe te wijzen
 
-    return true;
+    return true;  // Retourneer true om aan te geven dat het pallet verwijderen is gelukt 
 }
 
 bool Shelf::insertPallet(int slot, Pallet pallet) {
     if (slot < 0 || slot >= 4) {
-        return false;  // Ongeldig slot
+        return false;  // Retourneer false voor een ongeldig slot
     }
 
     if (pallets[slot].getItemCount() > 0) {
-        return false;  // Slot is al bezet
+        return false;  // Retourneer false als het slot al bezet is
     }
-
-    // Optioneel: Voer hier aanvullende logica uit om de pallet in te voegen
-
-    return true;
+    return true;  // Retourneer true om aan te geven dat de pallet invoegen is gelukt
 }
 

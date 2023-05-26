@@ -3,29 +3,56 @@
 #include "../src/include/warehouse.hpp"
 #include "../src/include/shelf.hpp"
 #include "../src/include/employee.hpp"
+#include "../test/include/catch.hpp"
+#define CATCH_CONFIG_MAIN
 
 
-int testPallet(){
-// Test Pallet met opgegeven parameters
-    Pallet pallet1("Brabante worste broodjes", 25, 8);
+TEST_CASE("Get Item Name") {
+    Pallet testPallet = Pallet("Limburgse vlaai", 50, 20); // aanmaken object "pallet" 
+    REQUIRE(testPallet.getItemName() == "Limburgse vlaai"); // verkrijgt de naam van het item in pallet
+}
 
-    std::cout << "Product naam =  " << pallet1.getItemName() << std::endl;
-    std::cout << "Hoeveelheid = " << pallet1.getItemCount() << std::endl;
-    std::cout << "Overige plaatsen = " << pallet1.getRemainingSpace() << std::endl;
+TEST_CASE("Get Item Count") {
+    Pallet testPallet = Pallet("Limburgse vlaai", 50, 20); // aanmaken object "pallet"
+    REQUIRE(testPallet.getItemCount() == 20); //verkrijgt de hoeveelheid aanwezige items op pallet
+}
 
-    pallet1.takeOne();
-    std::cout << "Na het pakken afnemen van 1 broodje: hoeveelheid = " << pallet1.getItemCount() << std::endl;
+TEST_CASE("Get Remaining Space") {
+    Pallet testPallet = Pallet("Limburgse vlaai", 50, 20); // aanmaken object "pallet"
+    REQUIRE(testPallet.getRemainingSpace() == 30); // verkrijgt het aantal overige plekken op pallet
+}
 
-    pallet1.putOne();
-    std::cout << "Na het pakken toevoegen van 1 broodje: hoeveelheid = " << pallet1.getItemCount() << std::endl;
+TEST_CASE("Reallocate Empty Pallet") {
+    Pallet testPallet = Pallet("Limburgse vlaai", 50, 1); // aanmaken object "pallet"
+    REQUIRE(testPallet.ReallocateEmptyPallet("Limburgse vlaai", 50, 1) == false); // probeerd pallet te verplaatsen, kan niet want de pallet is niet leeg
 
-    // Test Pallet zonder opgegeven parameters
-    Pallet pallet2;
+    testPallet.takeOne(); // pakt het laatste item van de pallet
+    REQUIRE(testPallet.ReallocateEmptyPallet("Brabants worstebroodje", 100, 0) == true); // verplaatst te pallet
+    REQUIRE(testPallet.getRemainingSpace() == 100); // verkrijgt het aantal overige plekken (deze keer op een lege pallet)
+}
 
-    std::cout << "Product naam = " << pallet2.getItemName() << std::endl;
-    std::cout << "Hoeveelheid = " << pallet2.getItemCount() << std::endl;
-    std::cout << "Overige plaatsen = " << pallet2.getRemainingSpace() << std::endl;
+TEST_CASE("Take Item off of a semi-full Pallet") {
+    Pallet testPallet1 = Pallet("Limburgse vlaai", 50, 46); // aanmaken object "pallet1"
+    Pallet testPallet2 = Pallet("Brabants worstebroodje", 50, 18); // aanmaken object "pallet1"
 
-    pallet2.ReallocateEmptyPallet("Limburgse vlaai", 8);
-    std::cout << "Na het her lokaliseren: " << pallet2.getItemName() << ", overige plaatsen: " << pallet2.getRemainingSpace() << std::endl;
-};
+    REQUIRE(testPallet1.takeOne()); // neemt 1 item van pallet1
+    REQUIRE(testPallet2.takeOne()); // neemt 1 item van pallet2
+    REQUIRE(testPallet2.takeOne()); // neemt nogmaals een item van pallet2
+
+    //checkt of de verwachte waardes overeenkomen
+    REQUIRE(testPallet1.getItemCount() == 45);
+    REQUIRE(testPallet2.getItemCount() == 16);
+}
+
+TEST_CASE("Put Item on a semi-empty Pallet") {
+    Pallet testPallet1 = Pallet("Limburgse vlaai", 50, 2); // aanmaken object "pallet1"
+    Pallet testPallet2 = Pallet("Brabants worstebroodje", 50, 5); // aanmaken object "pallet1"
+
+    REQUIRE(testPallet1.putOne());// voegt 1 item toe aan pallet1
+    REQUIRE(testPallet2.putOne());// voegt 1 item toe aan pallet1
+    REQUIRE(testPallet2.putOne());// voegt nogmaals een item toe aan pallet2
+
+    //checkt of de verwachte waardes overeenkomen
+    REQUIRE(testPallet1.getItemCount() == 3);
+    REQUIRE(testPallet2.getItemCount() == 7);
+}

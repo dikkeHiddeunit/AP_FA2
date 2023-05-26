@@ -10,9 +10,11 @@ private:
 
 public:
     Employee(std::string name, bool forkliftCertificate);
-    std::string getName();
-    bool getBusy();
+    std::string getName() const;
+    bool getBusy() const;
     void setBusy(bool busy);
-    bool getForkliftCertificate();
+    bool getForkliftCertificate() const;
     void setForkliftCertificate(bool forkliftCertificate);
+    friend bool operator==(const Employee& lhs, const Employee& rhs);
 };
+

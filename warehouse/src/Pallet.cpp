@@ -31,7 +31,7 @@ const int Pallet::getRemainingSpace() {
 }
 
 // Zodra een pallet leeg is reset hij de waarden waardoor de pallet als nieuw is
-bool Pallet::ReallocateEmptyPallet(std::string itemName, int itemCapacity) {
+bool Pallet::ReallocateEmptyPallet(std::string itemName, int itemCapacity, int itemCount) {
     if (itemCount == 0) {
         this->itemName = itemName;
         this->itemCapacity = itemCapacity;
@@ -56,4 +56,9 @@ bool Pallet::putOne() {
         return true;
     }
     return false;
+}
+
+// Maakt te pallet leeg
+bool Pallet::isEmpty() {
+    return (itemCount == 0);
 }
